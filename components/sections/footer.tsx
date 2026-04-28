@@ -1,6 +1,7 @@
 "use client"
 
-import { Phone, Mail, MessageCircle, Linkedin, Instagram } from "lucide-react"
+import { Phone, Mail, MessageCircle } from "lucide-react"
+import { Linkedin, Instagram } from "@/components/ui/icons"
 import FadeIn from "@/components/kokonutui/fade-in"
 import SocialButtonGroup from "@/components/kokonutui/social-button"
 import ThemeToggle from "@/components/theme-toggle"
