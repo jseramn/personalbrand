@@ -1,15 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "motion/react"
 import { Menu, X } from "lucide-react"
 import ThemeToggle from "@/components/theme-toggle"
 
 const navItems = [
   { label: "Quién soy", href: "#quien-soy" },
   { label: "Qué hago", href: "#problemas" },
-  { label: "Como lo hago", href: "#proceso" },
-  { label: "Que aporto", href: "#valor" },
+  { label: "Cómo lo hago", href: "#proceso" },
+  { label: "Qué aporto", href: "#valor" },
   { label: "Casos reales", href: "#casos" },
   { label: "Contacto", href: "#contacto" },
 ]
@@ -22,32 +21,26 @@ export default function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50)
     }
+    handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled
-          ? "bg-background/80 backdrop-blur-lg border-b border-border"
-          : "bg-transparent"
-          }`}
+      <nav
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? "bg-background/95 border-b border-border shadow-sm"
+            : "bg-transparent"
+        }`}
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <a
-              href="#"
-              className="text-xl font-bold text-foreground hover:text-primary transition-colors"
-            >
+            <a href="#" className="text-xl font-bold text-foreground hover:text-primary transition-colors">
               JR<span className="text-primary">.</span>
             </a>
 
-            {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">
               {navItems.map((item) => (
                 <a
@@ -63,59 +56,43 @@ export default function Navigation() {
               </div>
             </div>
 
-            {/* Mobile Menu Button + Theme Toggle */}
             <div className="flex items-center gap-2 md:hidden">
               <ThemeToggle />
               <button
+                type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 className="p-2 text-foreground hover:text-primary transition-colors"
                 aria-label="Toggle menu"
               >
-                {isMobileMenuOpen ? (
-                  <X className="w-6 h-6" />
-                ) : (
-                  <Menu className="w-6 h-6" />
-                )}
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
         </div>
-      </motion.nav>
+      </nav>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 md:hidden"
-          >
-            <div
-              className="absolute inset-0 bg-background/95 backdrop-blur-lg"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-            <div className="relative pt-20 px-6">
-              <div className="flex flex-col gap-2">
-                {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="px-4 py-3 text-lg text-foreground hover:text-primary rounded-xl hover:bg-primary/10 transition-all"
-                  >
-                    {item.label}
-                  </motion.a>
-                ))}
-              </div>
+      {isMobileMenuOpen && (
+        <div className="fixed inset-0 z-40 md:hidden">
+          <div
+            className="absolute inset-0 bg-background/95"
+            onClick={() => setIsMobileMenuOpen(false)}
+          />
+          <div className="relative pt-20 px-6 transition-transform duration-200 ease-out">
+            <div className="flex flex-col gap-2">
+              {navItems.map((item) => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block rounded-xl px-4 py-3 text-lg text-foreground hover:text-primary hover:bg-primary/10 transition-all"
+                >
+                  {item.label}
+                </a>
+              ))}
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          </div>
+        </div>
+      )}
     </>
   )
 }

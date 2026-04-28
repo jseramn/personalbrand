@@ -22,9 +22,9 @@ export default function DynamicText({ words, className = "" }: DynamicTextProps)
     <AnimatePresence mode="wait">
       <motion.span
         key={currentIndex}
-        initial={{ opacity: 0, y: 20, filter: "blur(8px)" }}
-        animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-        exit={{ opacity: 0, y: -20, filter: "blur(8px)" }}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.4, ease: "easeInOut" }}
         className={`inline-block bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent ${className}`}
       >
