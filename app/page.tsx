@@ -6,7 +6,6 @@ import Problems from "@/components/sections/problems"
 import Process from "@/components/sections/process"
 import Value from "@/components/sections/value"
 import CaseStudy from "@/components/sections/case-study"
-import FAQ from "@/components/sections/faq"
 import Contact from "@/components/sections/contact"
 import Footer from "@/components/sections/footer"
 

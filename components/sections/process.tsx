@@ -100,7 +100,7 @@ export default function Process() {
             <div className="absolute left-[27px] top-10 bottom-10 w-px bg-gradient-to-b from-primary/50 via-primary/20 to-transparent hidden sm:block" />
 
             <div className="space-y-3">
-              {steps.map((step, index) => {
+              {steps.map((step) => {
                 const Icon = step.icon
                 const isOpen = openId === step.id
 

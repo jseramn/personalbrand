@@ -4,8 +4,8 @@ import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist-sans' })
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
   title: 'José Ramón | Consultor Tecnológico para PYMES',
@@ -38,8 +38,15 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="es" className="scroll-smooth" suppressHydrationWarning>
-      <body className="font-sans antialiased bg-background text-foreground">
+    <html
+      lang="es"
+      className={`${geist.variable} ${geistMono.variable} scroll-smooth`}
+      suppressHydrationWarning
+    >
+      <body
+        className="font-sans antialiased bg-background text-foreground"
+        suppressHydrationWarning
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

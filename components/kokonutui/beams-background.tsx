@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import { motion } from "motion/react"
 import { useTheme } from "next-themes"
+import { useMounted } from "@/hooks/use-mounted"
 
 interface Beam {
   x: number
@@ -26,10 +27,11 @@ export default function BeamsBackground({
   const beamsRef = useRef<Beam[]>([])
   const animationFrameRef = useRef<number>(0)
   const { resolvedTheme } = useTheme()
+  const mounted = useMounted()
 
   const MINIMUM_BEAMS = 25
 
-  const isDark = resolvedTheme === "dark"
+  const isDark = mounted ? resolvedTheme === "dark" : true
 
   function createBeam(width: number, height: number, isDarkMode: boolean): Beam {
     const angle = -35 + Math.random() * 10
@@ -122,7 +124,10 @@ export default function BeamsBackground({
   }, [isDark])
 
   return (
-    <div className="relative min-h-screen w-full bg-background overflow-x-hidden transition-colors duration-300">
+    <div
+      className="relative min-h-screen w-full bg-background overflow-x-hidden transition-colors duration-300"
+      suppressHydrationWarning
+    >
 
       {/* CANVAS (BASE REAL) */}
       <canvas
@@ -135,6 +140,7 @@ export default function BeamsBackground({
         className="pointer-events-none fixed inset-0 z-[1]"
         animate={{ opacity: [0.03, 0.08, 0.03] }}
         transition={{ duration: 8, repeat: Infinity }}
+        suppressHydrationWarning
         style={{
           background: isDark
             ? `linear-gradient(125deg, transparent 20%, rgba(80, 90, 160, 0.15) 40%, transparent 60%)`
@@ -146,6 +152,7 @@ export default function BeamsBackground({
       {/* GRADIENTES RADIALES */}
       <div
         className="pointer-events-none fixed inset-0 z-[2] transition-opacity duration-300"
+        suppressHydrationWarning
         style={{
           opacity: isDark ? 0.4 : 0.25,
           background: isDark

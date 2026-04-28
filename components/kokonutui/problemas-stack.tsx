@@ -2,9 +2,11 @@
 
 import { AlertTriangle, ShieldOff, TrendingDown, X } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { useTheme } from "next-themes"
+import { useMounted } from "@/hooks/use-mounted"
+import { useIsMobile } from "@/hooks/use-mobile"
 
 interface Problema {
   id: string
@@ -201,6 +203,7 @@ function ProblemCard({
       {/* Background gradient */}
       <div
         className="absolute inset-0"
+        suppressHydrationWarning
         style={{
           background: `linear-gradient(145deg, ${color}cc 0%, ${bgBase} 70%)`,
         }}
@@ -208,6 +211,7 @@ function ProblemCard({
       {/* Noise texture overlay */}
       <div
         className="absolute inset-0 opacity-[0.03]"
+        suppressHydrationWarning
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
         }}
@@ -215,6 +219,7 @@ function ProblemCard({
       {/* Inner border glow */}
       <div
         className="absolute inset-0 rounded-2xl"
+        suppressHydrationWarning
         style={{
           background: `radial-gradient(ellipse at 30% 20%, ${color}55, transparent 60%)`,
         }}
@@ -226,6 +231,7 @@ function ProblemCard({
         <div className="flex items-start justify-between">
           <div
             className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-xl"
+            suppressHydrationWarning
             style={{
               background: `${color}55`,
               border: `1px solid ${color}80`,
@@ -236,6 +242,7 @@ function ProblemCard({
           </div>
           <span
             className="font-bold text-4xl sm:text-5xl leading-none tracking-tighter"
+            suppressHydrationWarning
             style={{ color: `${color}60` }}
           >
             {problema.number}
@@ -261,6 +268,7 @@ function ProblemCard({
               initial={{ opacity: 0, y: 12 }}
               transition={{ duration: 0.3, delay: 0.15 }}
               className="rounded-xl p-2 sm:p-3"
+              suppressHydrationWarning
               style={{
                 background: `${color}30`,
                 border: `1px solid ${color}40`,
@@ -302,17 +310,9 @@ function ProblemCard({
 export default function ProblemasStack() {
   const [stackState, setStackState] = useState<StackState>("stacked")
   const [selectedId, setSelectedId] = useState<string | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const isMobile = useIsMobile()
   const { resolvedTheme } = useTheme()
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => {
-    setMounted(true)
-    const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
-  }, [])
+  const mounted = useMounted()
 
   const isDark = mounted ? resolvedTheme === "dark" : true
 
