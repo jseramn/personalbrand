@@ -1,23 +1,65 @@
   "use client";
 
 import { Cpu, Heart, User, Zap, Hand } from "lucide-react";
-import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { useRef, useState } from "react";
+import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "motion/react";
+import { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+
+export function RotatingImages({ images, className }: { images: string[], className?: string }) {
+  const [currentIndex, setCurrentIndex] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % images.length)
+    }, 2500)
+    return () => clearInterval(interval)
+  }, [images.length])
+
+  return (
+    <div className={cn("relative flex items-center justify-center overflow-hidden", className)}>
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={currentIndex}
+          src={images[currentIndex]}
+          initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
+          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+          exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
+          transition={{ duration: 0.4, ease: "easeInOut" }}
+          className="absolute w-full h-full object-contain"
+          alt="Certification Logo"
+        />
+      </AnimatePresence>
+    </div>
+  )
+}
 
 const TILT_MAX = 5;
 const TILT_SPRING = { stiffness: 300, damping: 28 } as const;
 const GLOW_SPRING = { stiffness: 180, damping: 22 } as const;
 
 export interface AboutItem {
-  icon: React.ElementType;
+  icon?: React.ElementType;
+  images?: string[];
   title: string;
   description: string;
 }
 
 const ITEMS: AboutItem[] = [
   {
-    icon: Cpu,
+    images: [
+      "/cert-logos/aws.webp",
+      "/cert-logos/easycode.png",
+      "/cert-logos/geekcorp.png",
+      "/cert-logos/google.png",
+      "/cert-logos/ibm.png",
+      "/cert-logos/linkedin.svg",
+      "/cert-logos/mintic.png",
+      "/cert-logos/ms.webp",
+      "/cert-logos/platzi.png",
+      "/cert-logos/pmi-removebg-preview.png",
+      "/cert-logos/sinu.png",
+      "/cert-logos/unal.png"
+    ],
     title: "Experto Especializado",
     description:
       "Tengo certificaciones por entidades importantes del sector tecnológico en Colombia y el mundo.",
@@ -115,9 +157,15 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
             />
 
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-center gap-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 border border-primary/40">
-                <Icon className="h-8 w-8 text-foreground" />
-              </div>
+              {item.images ? (
+                <div className="flex h-16 w-32 items-center justify-center">
+                  <RotatingImages images={item.images} className="w-full h-full" />
+                </div>
+              ) : Icon && (
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 border border-primary/40">
+                  <Icon className="h-8 w-8 text-foreground" />
+                </div>
+              )}
               <h3 className="text-xl font-semibold text-foreground tracking-tight">
                 {item.title}
               </h3>
@@ -137,7 +185,13 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
               "shadow-[0_0_30px_rgba(var(--primary),0.2)]"
             )}
           >
-            <Icon className="h-6 w-6 text-foreground mb-6 opacity-50" />
+            {item.images ? (
+              <div className="w-full h-24 mb-6">
+                <RotatingImages images={item.images} className="w-full h-full opacity-90" />
+              </div>
+            ) : Icon && (
+              <Icon className="h-6 w-6 text-foreground mb-6 opacity-50" />
+            )}
             <p className="text-base text-foreground leading-relaxed">
               {item.description}
             </p>
