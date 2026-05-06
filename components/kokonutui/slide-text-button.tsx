@@ -27,7 +27,7 @@ export function SlideTextButton({
   const isPrimary = variant === "primary";
   const variantStyles = isPrimary
     ? "bg-[linear-gradient(110deg,#28396D,45%,#4b6cb7,55%,#28396D)] bg-[length:200%_100%] text-white hover:bg-[position:-100%_0] border border-[#28396D]"
-    : "bg-transparent text-white border border-white/20 hover:border-white/40 hover:bg-white/10 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]";
+    : "bg-transparent text-foreground border border-border hover:border-primary/40 hover:bg-primary/10 hover:shadow-[0_0_15px_rgba(43,57,109,0.1)]";
 
   return (
     <motion.div

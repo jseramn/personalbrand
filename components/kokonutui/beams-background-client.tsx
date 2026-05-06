@@ -34,7 +34,7 @@ function createBeam(width: number, height: number): Beam {
   }
 }
 
-function useDesktopOnly() {
+function useIsDesktop() {
   const [isDesktop, setIsDesktop] = useState(false)
 
   useEffect(() => {
@@ -58,11 +58,9 @@ export default function BeamsBackgroundClient() {
   const animationFrameRef = useRef<number>(0)
   const beamsRef = useRef<Beam[]>([])
   const [isMounted, setIsMounted] = useState(false)
-  const isDesktop = useDesktopOnly()
+  const isDesktop = useIsDesktop()
 
   useEffect(() => {
-    if (!isDesktop) return
-
     const handleIdle = () => setIsMounted(true)
     if (typeof window.requestIdleCallback === "function") {
       window.requestIdleCallback(handleIdle, { timeout: 1000 })
@@ -70,7 +68,7 @@ export default function BeamsBackgroundClient() {
       const timer = window.setTimeout(handleIdle, 800)
       return () => window.clearTimeout(timer)
     }
-  }, [isDesktop])
+  }, [])
 
   useEffect(() => {
     if (!isMounted || !isDesktop) return
@@ -138,10 +136,30 @@ export default function BeamsBackgroundClient() {
     }
   }, [isDesktop, isMounted])
 
-  if (!isDesktop || !isMounted) {
-    return null
+  if (!isMounted) return null
+
+  // Mobile: lightweight CSS gradient background (no canvas for perf)
+  if (!isDesktop) {
+    return (
+      <>
+        <div
+          className="pointer-events-none fixed inset-0 z-0"
+          style={{
+            background: "linear-gradient(160deg, rgba(43, 57, 109, 0.08) 0%, transparent 40%, rgba(74, 85, 157, 0.06) 70%, transparent 100%)",
+          }}
+        />
+        <div
+          className="pointer-events-none fixed inset-0 z-[1] animate-pulse"
+          style={{
+            background: "radial-gradient(circle at 30% 20%, rgba(43, 57, 109, 0.12), transparent 50%), radial-gradient(circle at 75% 80%, rgba(74, 85, 157, 0.08), transparent 45%)",
+            animationDuration: "6s",
+          }}
+        />
+      </>
+    )
   }
 
+  // Desktop: full canvas animation + overlay layers
   return (
     <>
       <canvas

@@ -1,4 +1,4 @@
-"use client";
+  "use client";
 
 import { Cpu, Heart, User, Zap, Hand } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform } from "motion/react";
@@ -100,7 +100,7 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
           <div
             className={cn(
               "absolute inset-0 h-full w-full [backface-visibility:hidden] overflow-hidden rounded-2xl border",
-              "border-white/10 bg-[#0B0B0B] p-8 flex flex-col justify-between",
+              "border-border bg-background p-8 flex flex-col justify-between",
               "shadow-lg"
             )}
           >
@@ -110,20 +110,20 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
               className="pointer-events-none absolute inset-0 rounded-2xl"
               style={{
                 opacity: glowOpacity,
-                background: `radial-gradient(ellipse at 20% 20%, #28396D40, transparent 65%)`,
+                background: `radial-gradient(ellipse at 20% 20%, var(--primary)40, transparent 65%)`,
               }}
             />
 
             <div className="relative z-10 flex flex-col items-center justify-center h-full text-center gap-6">
-              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#28396D]/20 border border-[#28396D]/40">
-                <Icon className="h-8 w-8 text-[#E4E4E4]" />
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 border border-primary/40">
+                <Icon className="h-8 w-8 text-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-white tracking-tight">
+              <h3 className="text-xl font-semibold text-foreground tracking-tight">
                 {item.title}
               </h3>
             </div>
 
-            <div className="relative z-10 flex items-center justify-center gap-2 text-[#E4E4E4]/60 animate-pulse">
+            <div className="relative z-10 flex items-center justify-center gap-2 text-muted-foreground animate-pulse">
               <Hand className="h-4 w-4" />
               <span className="text-sm font-medium">Toca para descubrir</span>
             </div>
@@ -133,12 +133,12 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
           <div
             className={cn(
               "absolute inset-0 h-full w-full [backface-visibility:hidden] [transform:rotateY(180deg)] overflow-hidden rounded-2xl border",
-              "border-[#28396D]/50 bg-[#28396D]/10 backdrop-blur-md p-8 flex flex-col items-center justify-center text-center",
-              "shadow-[0_0_30px_rgba(40,57,109,0.2)]"
+              "border-primary/50 bg-primary/10 backdrop-blur-md p-8 flex flex-col items-center justify-center text-center",
+              "shadow-[0_0_30px_rgba(var(--primary),0.2)]"
             )}
           >
-            <Icon className="h-6 w-6 text-[#E4E4E4] mb-6 opacity-50" />
-            <p className="text-base text-[#E4E4E4] leading-relaxed">
+            <Icon className="h-6 w-6 text-foreground mb-6 opacity-50" />
+            <p className="text-base text-foreground leading-relaxed">
               {item.description}
             </p>
           </div>
@@ -172,12 +172,12 @@ export default function AboutFlipCards() {
   const [hoveredTitle, setHoveredTitle] = useState<string | null>(null);
 
   return (
-    <section className="relative w-full max-w-4xl mx-auto py-12 px-4 bg-[#0B0B0B] rounded-3xl">
+    <section className="relative w-full max-w-4xl mx-auto py-12 px-4 bg-background rounded-3xl">
       <div className="mb-12 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight">
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground tracking-tight">
           Quién soy
         </h2>
-        <div className="h-1 w-20 bg-gradient-to-r from-transparent via-[#28396D] to-transparent mx-auto mt-4" />
+        <div className="h-1 w-20 bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-4" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
