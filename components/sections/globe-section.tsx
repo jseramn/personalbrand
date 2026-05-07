@@ -1,4 +1,13 @@
-import Globe from "@/components/ui/globe"
+import dynamic from "next/dynamic"
+
+const Globe = dynamic(
+  () => import("@/components/ui/globe"),
+  {
+    loading: () => (
+      <div className="aspect-square w-full rounded-3xl bg-slate-950/10" />
+    ),
+  }
+)
 
 export default function GlobeSection() {
   return (

@@ -22,6 +22,8 @@ export function RotatingImages({ images, className }: { images: string[], classN
         <motion.img
           key={currentIndex}
           src={images[currentIndex]}
+          loading="lazy"
+          decoding="async"
           initial={{ opacity: 0, y: 10, filter: "blur(4px)" }}
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: -10, filter: "blur(4px)" }}
@@ -179,6 +181,8 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
               ) : item.customImage ? (
                 <motion.img
                   src={item.customImage}
+                  loading="lazy"
+                  decoding="async"
                   animate={{ scale: [1.4, 1.2, 1.4], y: [0, -6, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   className="w-24 h-24 object-contain invert drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
@@ -219,6 +223,8 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
   ) : item.customImage ? (
     <motion.img
       src={item.customImage}
+      loading="lazy"
+      decoding="async"
       // Ajustado para ser idéntico al frente (escala y movimiento Y)
       animate={{ scale: [1.4, 1.2, 1.4], y: [0, -6, 0] }}
       transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}

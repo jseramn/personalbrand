@@ -1,4 +1,20 @@
-import { AboutFlipCardsGrid } from "@/components/kokonutui/about-flip-cards"
+import dynamic from "next/dynamic"
+
+const AboutFlipCardsGrid = dynamic(
+  () => import("@/components/kokonutui/about-flip-cards").then((mod) => mod.AboutFlipCardsGrid),
+  {
+    loading: () => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div
+            key={index}
+            className="h-[320px] rounded-3xl border border-border/30 bg-card/80"
+          />
+        ))}
+      </div>
+    ),
+  }
+)
 
 export default function About() {
   return (

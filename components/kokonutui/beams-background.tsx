@@ -1,4 +1,11 @@
-import BeamsBackgroundClient from "@/components/kokonutui/beams-background-client"
+import dynamic from "next/dynamic"
+
+const BeamsBackgroundClient = dynamic(
+  () => import("@/components/kokonutui/beams-background-client"),
+  {
+    loading: () => null,
+  }
+)
 
 export default function BeamsBackground({
   children,
