@@ -4,6 +4,7 @@ import { Cpu, Heart, User, Zap, Hand } from "lucide-react";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import AppleActivityCard from "./apple-activity-card";
 
 export function RotatingImages({ images, className }: { images: string[], className?: string }) {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -40,6 +41,8 @@ const GLOW_SPRING = { stiffness: 180, damping: 22 } as const;
 export interface AboutItem {
   icon?: React.ElementType;
   images?: string[];
+  customImage?: string;
+  component?: React.ReactNode;
   title: string;
   description: string;
 }
@@ -65,20 +68,32 @@ const ITEMS: AboutItem[] = [
       "Tengo certificaciones por entidades importantes del sector tecnológico en Colombia y el mundo.",
   },
   {
-    icon: Heart,
+    component: (
+      <div className="w-full flex items-center justify-center pointer-events-none [transform:scale(0.65)] origin-center h-[140px] -mt-6">
+        <AppleActivityCard title="" className="p-0 bg-transparent border-0 shadow-none" />
+      </div>
+    ),
     title: "Amor por lo que hago",
     description:
       "Me apasiona la tecnología y ayudar a las personas a mejorar sus vidas con ella.",
   },
   {
-    icon: User,
+    customImage: "/psi.png",
     title: "Enfoque Humano",
     description:
       "Mi trabajo es que la tecnología aumente la productividad de las personas y les ahorre tiempo, no que las reemplace.",
   },
   {
-    icon: Zap,
-    title: "Acción Visible",
+    component: (
+      <motion.img
+        src="/guarantee.png"
+        animate={{ rotateY: [0, 360] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        className="w-[86px] h-[86px] object-contain invert drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+        alt="Garantía"
+      />
+    ),
+    title: "Devolución como Garantia",
     description: "La meta es implementar la solución ante el problema.",
   },
 ];
@@ -161,6 +176,18 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
                 <div className="flex h-16 w-32 items-center justify-center">
                   <RotatingImages images={item.images} className="w-full h-full" />
                 </div>
+              ) : item.customImage ? (
+                <motion.img
+                  src={item.customImage}
+                  animate={{ scale: [1.4, 1.2, 1.4], y: [0, -6, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="w-24 h-24 object-contain invert drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+                  alt={item.title}
+                />
+              ) : item.component ? (
+                <div className="w-full flex items-center justify-center">
+                  {item.component}
+                </div>
               ) : Icon && (
                 <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/20 border border-primary/40">
                   <Icon className="h-8 w-8 text-foreground" />
@@ -177,17 +204,31 @@ function FlipCard({ item, dimmed, onHoverStart, onHoverEnd }: { item: AboutItem,
             </div>
           </div>
 
-          {/* BACK */}
-          <div
-            className={cn(
-              "absolute inset-0 h-full w-full [backface-visibility:hidden] [transform:rotateY(180deg)] overflow-hidden rounded-2xl border",
-              "border-primary/50 bg-primary/10 backdrop-blur-md p-8 flex flex-col items-center justify-center text-center",
-              "shadow-[0_0_30px_rgba(var(--primary),0.2)]"
-            )}
-          >
-            {item.images ? (
-              <div className="w-full h-24 mb-6">
-                <RotatingImages images={item.images} className="w-full h-full opacity-90" />
+{/* BACK */}
+<div
+  className={cn(
+    "absolute inset-0 h-full w-full [backface-visibility:hidden] [transform:rotateY(180deg)] overflow-hidden rounded-2xl border",
+    "border-primary/50 bg-primary/10 backdrop-blur-md p-8 flex flex-col items-center justify-center text-center",
+    "shadow-[0_0_30px_rgba(var(--primary),0.2)]"
+  )}
+>
+  {item.images ? (
+    <div className="w-full h-24 mb-6">
+      <RotatingImages images={item.images} className="w-full h-full opacity-90" />
+    </div>
+  ) : item.customImage ? (
+    <motion.img
+      src={item.customImage}
+      // Ajustado para ser idéntico al frente (escala y movimiento Y)
+      animate={{ scale: [1.4, 1.2, 1.4], y: [0, -6, 0] }}
+      transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      // Tamaño w-24, h-24 y la sombra especial del frente
+      className="w-24 h-24 object-contain invert drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] mb-6"
+      alt={item.title}
+    />
+  ) : item.component ? (
+              <div className="w-full h-24 flex items-center justify-center opacity-60 mb-6 [transform:scale(0.85)] origin-center">
+                {item.component}
               </div>
             ) : Icon && (
               <Icon className="h-6 w-6 text-foreground mb-6 opacity-50" />
